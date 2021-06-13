@@ -1,28 +1,25 @@
-import {AppBar, Button, makeStyles, Toolbar, Typography} from "@material-ui/core";
 import * as React from "react";
+import {Button, Typography} from "@material-ui/core";
+import styled from "styled-components";
+import {useRouter} from "next/router";
+import {Container} from "../components/Container";
 
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
-    marginRight: theme.spacing(2),
-  },
-  title: {
-    flexGrow: 1,
-  },
-}));
+
+const BtnText = styled.span`
+  padding: 0.4rem 0 0 1rem;
+`;
 
 export default function Home() {
-  const classes = useStyles();
+    const {push} = useRouter();
+
   return (
-      <AppBar position="static">
-        <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Nederlands online stem systeem
-          </Typography>
-          <Button color="inherit">Login</Button>
-        </Toolbar>
-      </AppBar>
-  )
+      <Container>
+        <Typography variant={"h3"} >Online stem systeem</Typography>
+        <Typography variant={"subtitle1"}>Om u stem uit te kunnen brengen moet u eerst inloggen met digid</Typography>
+        <Button variant={"contained"} onClick={() => push('/login')}>
+            <img src={"/digid.svg"} width="45px"/>
+            <BtnText>Login met Digid</BtnText>
+        </Button>
+      </Container>
+  );
 }
