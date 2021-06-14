@@ -25,7 +25,7 @@ export const Confirmed = () => {
         U Heeft gestemd
       </Typography>
       <Typography variant={'h5'} component={'p'}>
-        U heeft gestemd op: {party.leader} van de partij {party.name}
+        U heeft gestemd op: {party?.leader} van de partij {party?.name}
       </Typography>
       <Typography variant={'h5'} component={'p'}>
         <StyledA
