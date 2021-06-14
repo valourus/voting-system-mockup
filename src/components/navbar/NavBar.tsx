@@ -15,7 +15,7 @@ export const NavBar: FC = (): JSX.Element => {
     <AppBar position="static">
       <Toolbar>
         <StyledTypography variant="h6">online stem systeem</StyledTypography>
-        {user && <Typography>{user.username}</Typography>}
+        {user && <Typography>Ingelogd als: {user.username}</Typography>}
       </Toolbar>
     </AppBar>
   );

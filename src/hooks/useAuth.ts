@@ -3,27 +3,37 @@ import { User } from '../schema/User';
 import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 
-export const useAuth = (): ((username: string, password: string) => boolean) => {
+export const NEW_USER = 'new_user';
+export const ERROR = 'error';
+export const OLD_USER = 'old_user';
+
+export type LoginResponse = typeof NEW_USER | typeof ERROR | typeof OLD_USER;
+
+export const useAuth = (): {
+  login: (username: string, password: string) => LoginResponse;
+} => {
   const { setUserInContext } = useContext(UserContext);
-  const [userId, setUserId] = useLocalStorage<number>('user_id');
+  const setUserId = useLocalStorage<number>('user_id')[1];
   const [users, setUsers] = useLocalStorage<User[]>('users', [], {
     raw: false,
     serializer: (u) => JSON.stringify(u),
     deserializer: (u) => JSON.parse(u),
   });
 
-  const login = (username: string, password: string) => {
+  const login = (username: string, password: string): LoginResponse => {
     let id = users.findIndex((u) => username === u.username);
 
     if (id === -1) {
-      id = addUser({ username, password });
+      setUserId(addUser({ username, password }));
+      setUserInContext({ username, password });
+      return NEW_USER;
     }
     if (users[id].password === password) {
       setUserId(id);
       setUserInContext(users[id]);
-      return true;
+      return OLD_USER;
     }
-    return false;
+    return ERROR;
   };
 
   const addUser = (newUser: User) => {
@@ -32,5 +42,7 @@ export const useAuth = (): ((username: string, password: string) => boolean) => 
     return users.length - 1;
   };
 
-  return login;
+  return {
+    login,
+  };
 };

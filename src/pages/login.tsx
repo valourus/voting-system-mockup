@@ -1,11 +1,12 @@
-import { Button, Card, CardContent, TextField, Typography } from '@material-ui/core';
+import {Button, Card, CardContent, TextField, Typography} from '@material-ui/core';
 import * as React from 'react';
-import { Container } from '../components/Container';
+import {useState} from 'react';
+import {Container} from '../components/Container';
 import styled from 'styled-components';
-import { useState } from 'react';
-import { User } from '../schema/User';
-import { useAuth } from '../hooks/useAuth';
+import {User} from '../schema/User';
+import {NEW_USER, OLD_USER, useAuth} from '../hooks/useAuth';
 import Alert from '@material-ui/lab/Alert';
+import {useRouter} from 'next/router';
 
 const StyledContainer = styled(Container)`
   max-width: 500px;
@@ -25,7 +26,8 @@ const emptyUser = { username: '', password: '' };
 const Login = () => {
   const [{ username, password }, setLoginInfo] = useState<User>(emptyUser);
   const [isError, setIsError] = useState(false);
-  const login = useAuth();
+  const { login } = useAuth();
+  const { push } = useRouter();
 
   return (
     <StyledContainer>
@@ -57,7 +59,12 @@ const Login = () => {
               color={'primary'}
               variant={'contained'}
               type={'submit'}
-              onClick={() => setIsError(login(username, password))}
+              onClick={() => {
+                const response = login(username, password);
+                if (response === NEW_USER) push('/vote');
+                else if (response === OLD_USER) push('/confirmed');
+                else setIsError(true);
+              }}
             >
               Login
             </Button>
