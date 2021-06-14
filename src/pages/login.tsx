@@ -35,7 +35,11 @@ const Login = () => {
             Login met Digid
           </Typography>
           <FieldContainer>
-            {isError && <Alert variant="outlined" severity="error">Verkeerde gebruikersnaam of wachtwoord</Alert>}
+            {isError && (
+              <Alert variant="outlined" severity="error">
+                Verkeerde gebruikersnaam of wachtwoord
+              </Alert>
+            )}
             <TextField
               variant={'filled'}
               label={'Gebruikersnaam'}

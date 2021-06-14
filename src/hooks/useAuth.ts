@@ -3,7 +3,7 @@ import { User } from '../schema/User';
 import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 
-export const useAuth = (): (username: string, password: string) => boolean => {
+export const useAuth = (): ((username: string, password: string) => boolean) => {
   const { setUserInContext } = useContext(UserContext);
   const [userId, setUserId] = useLocalStorage<number>('user_id');
   const [users, setUsers] = useLocalStorage<User[]>('users', [], {
@@ -18,8 +18,8 @@ export const useAuth = (): (username: string, password: string) => boolean => {
     if (id === -1) {
       id = addUser({ username, password });
     }
-    if(users[id].password === password) {
-      setUserId(id)
+    if (users[id].password === password) {
+      setUserId(id);
       setUserInContext(users[id]);
       return true;
     }
