@@ -4,8 +4,8 @@ import { useContext } from 'react';
 import { UserContext } from '../context/UserContext';
 import { useRouter } from 'next/router';
 import styled from 'styled-components';
-import {useVotes} from "../hooks/useVotes";
-import {parties} from "./vote";
+import { useVotes } from '../hooks/useVotes';
+import { parties } from './vote';
 
 const StyledA = styled.a`
   color: blue;
@@ -16,8 +16,8 @@ const StyledA = styled.a`
 export const Confirmed = () => {
   const { user, setUserInContext } = useContext(UserContext);
   const { push } = useRouter();
-  const {votes} = useVotes();
-  const party = parties.find(p => p.name === votes[user.username]);
+  const { votes } = useVotes();
+  const party = parties.find((p) => p.name === votes[user?.username]);
 
   return (
     <Container>
